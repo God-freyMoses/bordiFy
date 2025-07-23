@@ -1,0 +1,106 @@
+<app-navbar></app-navbar>
+
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 *ngIf="templateId && !isEditMode">Template Details</h2>
+    <h2 *ngIf="templateId && isEditMode">Edit Template</h2>
+    <h2 *ngIf="!templateId">Create Template</h2>
+    
+    <div *ngIf="templateId && !isEditMode">
+      <button class="btn btn-primary me-2" (click)="toggleEditMode()">Edit</button>
+      <button class="btn btn-secondary" routerLink="/templates">Back to List</button>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="d-flex justify-content-center">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+  </div>
+
+  <!-- View Mode -->
+  <div *ngIf="!loading && template && !isEditMode" class="card">
+    <div class="card-header">
+      <h3>{{ template.templateName }}</h3>
+    </div>
+    <div class="card-body">
+      <div class="mb-4">
+        <h5>Description</h5>
+        <p>{{ template.templateDescription || 'No description provided' }}</p>
+      </div>
+      <div class="mb-4">
+        <h5>Content</h5>
+        <div class="content-preview p-3 border rounded bg-light">
+          <pre>{{ template.templateContent }}</pre>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <h5>HR Manager ID</h5>
+          <p>{{ template.hrManagerId }}</p>
+        </div>
+        <div class="col-md-6">
+          <h5>Department ID</h5>
+          <p>{{ template.departmentId }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit/Create Mode -->
+  <div *ngIf="!loading && (isEditMode || !templateId)" class="card">
+    <div class="card-header">
+      <h3>{{ templateId ? 'Edit Template' : 'Create Template' }}</h3>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="templateForm" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label for="templateName" class="form-label">Template Name</label>
+          <input type="text" class="form-control" id="templateName" formControlName="templateName">
+          <div *ngIf="templateForm.get('templateName')?.invalid && templateForm.get('templateName')?.touched" class="text-danger">
+            Template name is required
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="templateDescription" class="form-label">Description</label>
+          <textarea class="form-control" id="templateDescription" rows="2" formControlName="templateDescription"></textarea>
+        </div>
+
+        <div class="mb-3">
+          <label for="templateContent" class="form-label">Content</label>
+          <textarea class="form-control" id="templateContent" rows="6" formControlName="templateContent"></textarea>
+          <div *ngIf="templateForm.get('templateContent')?.invalid && templateForm.get('templateContent')?.touched" class="text-danger">
+            Content is required
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="hrManagerId" class="form-label">HR Manager ID</label>
+            <input type="number" class="form-control" id="hrManagerId" formControlName="hrManagerId">
+            <div *ngIf="templateForm.get('hrManagerId')?.invalid && templateForm.get('hrManagerId')?.touched" class="text-danger">
+              HR Manager ID is required
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label for="departmentId" class="form-label">Department ID</label>
+            <input type="number" class="form-control" id="departmentId" formControlName="departmentId">
+            <div *ngIf="templateForm.get('departmentId')?.invalid && templateForm.get('departmentId')?.touched" class="text-danger">
+              Department ID is required
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-end">
+          <button type="button" class="btn btn-secondary me-2" (click)="cancel()">Cancel</button>
+          <button type="submit" class="btn btn-primary" [disabled]="templateForm.invalid">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

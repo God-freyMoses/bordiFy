@@ -1,0 +1,49 @@
+##### VARIABLES
+@SERVER = http://localhost:8080/api/templates
+@TOKEN = Bearer XXXXXXXXXXXXXXX
+
+##### CREATE TEMPLATE
+POST {{SERVER}}
+Content-Type: application/json
+Authorization: {{TOKEN}}
+
+{
+  "templateName": "Employee Onboarding",
+  "templateDescription": "Standard onboarding process for new employees",
+  "templateContent": "# Welcome to Our Company\n\n## Onboarding Steps\n1. Complete paperwork\n2. Set up workstation\n3. Meet the team\n4. Training sessions",
+  "hrManagerId": 1,
+  "departmentId": 1
+}
+
+##### GET TEMPLATE BY ID
+GET {{SERVER}}/1
+Authorization: {{TOKEN}}
+
+##### GET ALL TEMPLATES
+GET {{SERVER}}
+Authorization: {{TOKEN}}
+
+##### GET TEMPLATES BY DEPARTMENT
+GET {{SERVER}}/department/1
+Authorization: {{TOKEN}}
+
+##### GET TEMPLATES BY HR MANAGER
+GET {{SERVER}}/hr/1
+Authorization: {{TOKEN}}
+
+##### UPDATE TEMPLATE
+PUT {{SERVER}}/1
+Content-Type: application/json
+Authorization: {{TOKEN}}
+
+{
+  "templateName": "Updated Employee Onboarding",
+  "templateDescription": "Revised onboarding process for new employees",
+  "templateContent": "# Welcome to Our Company\n\n## Revised Onboarding Steps\n1. Complete paperwork\n2. Set up workstation\n3. Meet the team\n4. Training sessions\n5. Follow-up meeting",
+  "hrManagerId": 1,
+  "departmentId": 1
+}
+
+##### DELETE TEMPLATE
+DELETE {{SERVER}}/1
+Authorization: {{TOKEN}}
