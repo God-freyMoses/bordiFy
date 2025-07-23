@@ -1,4 +1,4 @@
-package  com.shaper.server.model.entity;
+package com.shaper.server.model.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
@@ -7,10 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.AllArgsConstructor;
 
-
-
 @Entity
-@Table(name = "Company_Subscription")
+@Table(name = "company_subscriptions")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,31 +17,32 @@ public class CompanySub {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer id; 
+    @Column(name = "subscription_id", updatable = false, nullable = false)
+    private Integer id;
+
+    @OneToOne
+    @JoinColumn(name = "company_id", nullable = false)
+    private Company company;
 
     @Enumerated(EnumType.STRING)
-@Column(name = "subscription_plan", nullable = false, unique = true)
-private SubscriptionPlan subscriptionPlan;
-
+    @Column(name = "plan", nullable = false)
+    private SubscriptionPlan plan;
 
     @Column(name = "is_active", nullable = false)
-    private boolean isActive; 
+    private boolean isActive;
 
     @Column(name = "start_date", nullable = false)
     private LocalDateTime startDate;
 
-    @Column(name = "end_date") 
+    @Column(name = "end_date")
     private LocalDateTime endDate;
-
-    @ManyToOne
-    @JoinColumn(name = "company_id", nullable = false)
-    private Company company;
 
     @PrePersist
     protected void onCreate() {
         startDate = LocalDateTime.now();
-        isActive = true;    
-}
+        isActive = true;
+    }
+    
     @PreUpdate
     protected void onUpdate() {
         if (endDate == null) {

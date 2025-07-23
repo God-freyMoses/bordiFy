@@ -1,49 +1,43 @@
 package com.shaper.server.model.entity;
 
-import java.time.LocalDateTime;
-
+import java.util.Set;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.AllArgsConstructor;
 
-@Entity 
+import com.shaper.server.model.enums.UserRole;
+
+@Entity
 @Table(name = "Hire_User")
+@DiscriminatorValue("HIRE")
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Hire extends User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "candidate_id", updatable = false, nullable = false)
-    private Integer candidateId;
-
-    @Column(name = "hire_username", nullable = false, unique = true)
-    private String username; 
-
-    @Column(name = "hire_password", nullable = false)
-    private String passwordHash; 
-
-    @Column(name = "hire_email", nullable = false, unique = true)
-    private String email; 
-
-    @Column(name = "hire_name", nullable = false)
-    private String name;
-
-    @Column(name = "last_name", nullable = false)
-    private String lastName;
-
-    @Column(name = "registration_date", nullable = false)
-    private LocalDateTime registrationDate = LocalDateTime.now();
+    @Column(name = "gender")
+    private String gender;
+    
+    @Column(name = "title")
+    private String title;
+    
+    @Column(name = "picture_url")
+    private String pictureUrl;
 
     @ManyToOne
     @JoinColumn(name = "hr_id", nullable = false)
     private HrUser registeredByHr;
     
     @ManyToOne
-    @JoinColumn(name = "department_id") 
-    private CompanyDepartment assignedToDepartment;
+    @JoinColumn(name = "department_id")
+    private CompanyDepartment department;
+    
+    @OneToMany(mappedBy = "hire", cascade = CascadeType.ALL)
+    private Set<Progress> progressItems;
+    
+    @PrePersist
+    protected void onHireCreate() {
+        setRole(UserRole.HIRE);
+    }
 }

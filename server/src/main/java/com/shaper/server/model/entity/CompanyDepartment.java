@@ -1,4 +1,4 @@
-package  com.shaper.server.model.entity;
+package com.shaper.server.model.entity;
 
 import java.util.Set;
 import jakarta.persistence.*;
@@ -7,28 +7,23 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.AllArgsConstructor;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
-
 @Entity
-@Table(name = "Department")
+@Table(name = "departments")
 @Getter
 @Setter
 @NoArgsConstructor
-
+@AllArgsConstructor
 public class CompanyDepartment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE) 
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "department_id", updatable = false, nullable = false)
-    private Integer departmentId; 
+    private Integer id;
 
-    @Column(name = "department_name", nullable = false, unique = true)
-    private String departmentName;
+    @Column(name = "department_name", nullable = false)
+    private String name;
 
-	@ManyToOne
+    @ManyToOne
     @JoinColumn(name = "company_id", nullable = false)
     private Company company;
 
@@ -36,14 +31,15 @@ public class CompanyDepartment {
     @JoinColumn(name = "hr_manager_id", nullable = false)
     private HrUser createdByHr;
 
-    @OneToMany(mappedBy = "companyDepartment", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Template> templates;
-
-    @OneToMany(mappedBy = "assignedToCompanyDepartment", cascade = CascadeType.ALL)
-    private Set<Hire> associatedCandidates;
-
+    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL)
+    private Set<Hire> hires;
     
-
+    @ManyToMany
+    @JoinTable(
+        name = "department_templates",
+        joinColumns = @JoinColumn(name = "department_id"),
+        inverseJoinColumns = @JoinColumn(name = "template_id")
+    )
+    private Set<Template> assignedTemplates;
 }
-
 

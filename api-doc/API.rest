@@ -1,10 +1,93 @@
 ##### VARIABLES
 @SERVER = http://localhost:8080
-@USER = user
-@PASSWORD = 123456
-@TOKEN = Bearer XXXXXXXXXXXXXXX
-
-
+@HR_EMAIL = hr@example.com
+@HR_PASSWORD = password123
+@HIRE_EMAIL = hire@example.com
+@HIRE_PASSWORD = password123
+@TOKEN = Bearer eyJhbGciOiJIUzI1NiJ9...
 
 ##### TEST IF SERVER IS UP
 GET {{SERVER}}
+
+##### REGISTER HR MANAGER
+POST {{SERVER}}/api/users/register/hr
+Content-Type: application/json
+
+{
+  "email": "{{HR_EMAIL}}",
+  "password": "{{HR_PASSWORD}}",
+  "firstName": "John",
+  "lastName": "Doe",
+  "companyName": "Example Company"
+}
+
+##### LOGIN AS HR MANAGER
+# After successful login, copy the token from the response and update the @TOKEN variable
+POST {{SERVER}}/api/users/login
+Content-Type: application/json
+
+{
+  "email": "{{HR_EMAIL}}",
+  "password": "{{HR_PASSWORD}}"
+}
+
+##### REGISTER NEW HIRE (HR ONLY)
+POST {{SERVER}}/api/users/register/hire
+Content-Type: application/json
+Authorization: {{TOKEN}}
+
+{
+  "email": "{{HIRE_EMAIL}}",
+  "password": "{{HIRE_PASSWORD}}",
+  "firstName": "Jane",
+  "lastName": "Smith",
+  "gender": "Female",
+  "title": "Software Engineer",
+  "departmentId": "1"
+}
+
+##### LOGIN AS HIRE
+POST {{SERVER}}/api/users/login
+Content-Type: application/json
+
+{
+  "email": "{{HIRE_EMAIL}}",
+  "password": "{{HIRE_PASSWORD}}"
+}
+
+##### CREATE DEPARTMENT (HR ONLY)
+POST {{SERVER}}/api/departments
+Content-Type: application/json
+Authorization: {{TOKEN}}
+
+{
+  "name": "Engineering",
+  "companyId": "1"
+}
+
+##### CREATE TEMPLATE (HR ONLY)
+POST {{SERVER}}/api/templates
+Content-Type: application/json
+Authorization: {{TOKEN}}
+
+{
+  "title": "Software Engineer Onboarding",
+  "description": "Onboarding process for new software engineers",
+  "tasks": [
+    {
+      "title": "Complete paperwork",
+      "description": "Fill out all required forms",
+      "requiresSignature": true
+    },
+    {
+      "title": "Setup workstation",
+      "description": "Set up your computer and development environment",
+      "requiresSignature": false
+    }
+  ],
+  "departmentIds": [1]
+}
+
+##### GET TEMPLATES (ACCESSIBLE BY BOTH HR AND HIRE)
+GET {{SERVER}}/api/templates
+Authorization: {{TOKEN}}
