@@ -7,7 +7,7 @@
     <h2 *ngIf="!templateId">Create Template</h2>
     
     <div *ngIf="templateId && !isEditMode">
-      <button class="btn btn-primary me-2" (click)="toggleEditMode()">Edit</button>
+      <button *ngIf="userRole === 'HR_MANAGER'" class="btn btn-primary me-2" (click)="toggleEditMode()">Edit</button>
       <button class="btn btn-secondary" routerLink="/templates">Back to List</button>
     </div>
   </div>

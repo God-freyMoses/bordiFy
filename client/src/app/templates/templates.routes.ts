@@ -16,7 +16,7 @@ export const templatesRoutes: Routes = [
       {
         path: 'create',
         component: TemplateDetailComponent,
-        canActivate: [roleGuard(['HR'])]
+        canActivate: [roleGuard(['HR_MANAGER'])]
       },
       {
         path: ':id',

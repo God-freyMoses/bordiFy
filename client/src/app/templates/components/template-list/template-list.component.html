@@ -3,7 +3,7 @@
 <div class="container mt-4">
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h2>Templates</h2>
-    <button class="btn btn-primary" routerLink="/templates/create">Create Template</button>
+    <button *ngIf="userRole === 'HR_MANAGER'" class="btn btn-primary" routerLink="/templates/create">Create Template</button>
   </div>
 
   <div *ngIf="loading" class="d-flex justify-content-center">
@@ -31,7 +31,7 @@
           <button class="btn btn-sm btn-outline-primary" [routerLink]="['/templates', template.templateId]">
             View
           </button>
-          <button class="btn btn-sm btn-outline-danger" (click)="deleteTemplate(template.templateId)">
+          <button *ngIf="userRole === 'HR_MANAGER'" class="btn btn-sm btn-outline-danger" (click)="deleteTemplate(template.templateId)">
             Delete
           </button>
         </div>

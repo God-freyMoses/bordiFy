@@ -21,7 +21,7 @@ public class UserMapper {
         hrUser.setPassword(dto.getPassword());
         hrUser.setFirstName(dto.getFirstName());
         hrUser.setLastName(dto.getLastName());
-        hrUser.setRole(UserRole.HR);
+        hrUser.setRole(UserRole.HR_MANAGER);
         hrUser.setCompany(company);
         hrUser.setDepartments(new HashSet<>());
         hrUser.setHires(new HashSet<>());
@@ -36,7 +36,7 @@ public class UserMapper {
         hire.setPassword(dto.getPassword());
         hire.setFirstName(dto.getFirstName());
         hire.setLastName(dto.getLastName());
-        hire.setRole(UserRole.HIRE);
+        hire.setRole(UserRole.NEW_HIRE);
         hire.setGender(dto.getGender());
         hire.setTitle(dto.getTitle());
         hire.setPictureUrl(dto.getPictureUrl());

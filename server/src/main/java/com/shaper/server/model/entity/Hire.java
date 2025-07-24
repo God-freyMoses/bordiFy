@@ -38,6 +38,6 @@ public class Hire extends User {
     
     @PrePersist
     protected void onHireCreate() {
-        setRole(UserRole.HIRE);
+        setRole(UserRole.NEW_HIRE);
     }
 }

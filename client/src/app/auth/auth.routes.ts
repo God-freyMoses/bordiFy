@@ -10,6 +10,6 @@ export const AUTH_ROUTES: Route[] = [
   {
     path: 'register-hire', 
     loadComponent: () => import('./components/register-hire.component').then(m => m.RegisterHireComponent),
-    canActivate: [authGuard, () => roleGuard(['HR'])]
+    canActivate: [authGuard, () => roleGuard(['HR_MANAGER'])]
   },
 ];

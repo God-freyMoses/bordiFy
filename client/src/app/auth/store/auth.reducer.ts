@@ -15,7 +15,7 @@ export const initialState: AuthStateType = {
 
 export const authReducer = createReducer(
   initialState,
-  on(AuthActions.REGISTER, (state) => ({
+  on(AuthActions.REGISTER_HR, AuthActions.REGISTER_HIRE, (state) => ({
     ...state,
     loading: true
   })),

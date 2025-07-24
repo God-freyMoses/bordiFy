@@ -7,6 +7,9 @@ import { NavbarComponent } from '../../../share/components/navbar.component';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { TokenService } from '../../../auth/service/token.service';
+import { Store } from '@ngrx/store';
+import { selectUser } from '../../../auth/store/auth.selectors';
 
 @Component({
   selector: 'app-template-detail',
@@ -22,12 +25,15 @@ export class TemplateDetailComponent implements OnInit {
   loading = false;
   error = '';
   isEditMode = false;
+  userRole = '';
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
-    private templateService: TemplateService
+    private templateService: TemplateService,
+    private tokenService: TokenService,
+    private store: Store
   ) {
     this.templateForm = this.fb.group({
       templateName: ['', [Validators.required]],
@@ -46,6 +52,21 @@ export class TemplateDetailComponent implements OnInit {
     } else {
       this.isEditMode = true;
     }
+    
+    // Get user role from store
+    this.store.select(selectUser).subscribe(user => {
+      if (user) {
+        this.userRole = user.role;
+      } else {
+        // Fallback to token service if store is empty
+        this.userRole = this.tokenService.getUserRole() || '';
+      }
+      
+      // Redirect if not HR_MANAGER and trying to create/edit
+      if (this.userRole !== 'HR_MANAGER' && (!this.templateId || this.isEditMode)) {
+        this.router.navigate(['/templates']);
+      }
+    });
   }
 
   loadTemplate(id: number): void {

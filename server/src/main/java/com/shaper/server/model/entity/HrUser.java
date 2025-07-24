@@ -33,6 +33,6 @@ public class HrUser extends User {
     
     @PrePersist
     protected void onHrCreate() {
-        setRole(UserRole.HR);
+        setRole(UserRole.HR_MANAGER);
     }
 }

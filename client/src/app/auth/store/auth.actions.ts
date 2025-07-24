@@ -3,7 +3,7 @@ import {LoginRequestType, RegisterRequestType, UserTokenType, UserType} from '..
 
 
 
-export let REGISTER = undefined;
+// Generic register action is not needed as we use specific HR and HIRE actions
 
 
 // REGISTER ACTIONS

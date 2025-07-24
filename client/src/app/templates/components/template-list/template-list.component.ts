@@ -4,6 +4,9 @@ import { TemplateType } from '../../model/template.model';
 import { NavbarComponent } from '../../../share/components/navbar.component';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { TokenService } from '../../../auth/service/token.service';
+import { Store } from '@ngrx/store';
+import { selectUser } from '../../../auth/store/auth.selectors';
 
 @Component({
   selector: 'app-template-list',
@@ -16,11 +19,26 @@ export class TemplateListComponent implements OnInit {
   templates: TemplateType[] = [];
   loading = false;
   error = '';
+  userRole = '';
 
-  constructor(private templateService: TemplateService) {}
+  constructor(
+    private templateService: TemplateService,
+    private tokenService: TokenService,
+    private store: Store
+  ) {}
 
   ngOnInit(): void {
     this.loadTemplates();
+    
+    // Get user role from store
+    this.store.select(selectUser).subscribe(user => {
+      if (user) {
+        this.userRole = user.role;
+      } else {
+        // Fallback to token service if store is empty
+        this.userRole = this.tokenService.getUserRole() || '';
+      }
+    });
   }
 
   loadTemplates(): void {

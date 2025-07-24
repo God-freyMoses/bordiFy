@@ -144,7 +144,7 @@ export class RegisterHireComponent implements OnInit, OnDestroy {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       department: ['', [Validators.required]],
-      role: ['HIRE']
+      role: ['NEW_HIRE']
     });
   }
 

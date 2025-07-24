@@ -49,8 +49,9 @@ public class SecurityConfig {
                                 "/swagger-ui.html",
                                 "/webjars/**").permitAll()
                         // Protected endpoints
-                        .requestMatchers("/api/users/register/hire").hasRole("HR")
-                        .requestMatchers("/api/templates/**").hasAnyRole("HR", "HIRE")
+                        .requestMatchers("/api/users/register/hire").hasRole("HR_MANAGER")
+                        .requestMatchers("/api/templates/**").hasAnyRole("HR_MANAGER", "NEW_HIRE")
+                        .requestMatchers("/api/progress/**").hasAnyRole("HR_MANAGER", "NEW_HIRE")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session

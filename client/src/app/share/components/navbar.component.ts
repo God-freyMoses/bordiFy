@@ -20,10 +20,12 @@ import { TokenService } from '../../auth/services/token.service';
           <div class="flex space-x-6">
             <a routerLink="/dashboard" routerLinkActive="text-teal-600 font-medium" 
                class="text-gray-600 hover:text-teal-600 transition-colors">Dashboard</a>
-            <a routerLink="/templates" routerLinkActive="text-teal-600 font-medium" 
+            <a routerLink="/templates" routerLinkActive="text-teal-600 font-medium"
                class="text-gray-600 hover:text-teal-600 transition-colors">Templates</a>
-            <a *ngIf="userRole === 'HR'" routerLink="/register-hire" routerLinkActive="text-teal-600 font-medium" 
+            <a *ngIf="userRole === 'HR_MANAGER'" routerLink="/register-hire" routerLinkActive="text-teal-600 font-medium"
                class="text-gray-600 hover:text-teal-600 transition-colors">Register Hire</a>
+            <a *ngIf="userRole === 'NEW_HIRE'" routerLink="/tasks" routerLinkActive="text-teal-600 font-medium"
+               class="text-gray-600 hover:text-teal-600 transition-colors">My Tasks</a>
           </div>
           <div class="flex items-center space-x-4">
             <div class="text-sm text-gray-700">{{ userName }}</div>

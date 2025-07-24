@@ -14,6 +14,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -45,10 +47,14 @@ public class UserController {
         description = "Register a new hire. Only accessible by HR Managers."
     )
     @PostMapping("/register/hire")
-    @PreAuthorize("hasRole('HR')")
+    @PreAuthorize("hasRole('HR_MANAGER')")
     public ResponseEntity<Result> registerHire(@RequestBody RegisterRequestDTO registerRequestDTO) {
-        // Get the authenticated HR user
-        HrUser hrUser = userService.findHrByEmail(registerRequestDTO.getEmail());
+        // Get the authenticated user from the security context
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String hrEmail = authentication.getName();
+        
+        // Get the HR user by email
+        HrUser hrUser = userService.findHrByEmail(hrEmail);
         
         // Get the department
         CompanyDepartment department = null;

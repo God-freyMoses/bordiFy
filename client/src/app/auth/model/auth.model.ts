@@ -1,4 +1,4 @@
-export type UserRoleType = 'ADMIN' | 'USER' | 'HR' | 'HIRE';
+export type UserRoleType = 'USER' | 'HR_MANAGER' | 'NEW_HIRE';
 
 export type LoginRequestType = {
   email: string;

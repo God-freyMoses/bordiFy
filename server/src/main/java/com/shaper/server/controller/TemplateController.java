@@ -20,43 +20,43 @@ public class TemplateController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('HR')")
+    @PreAuthorize("hasRole('HR_MANAGER')")
     public ResponseEntity<TemplateDTO> createTemplate(@RequestBody TemplateDTO templateDTO) {
         return new ResponseEntity<>(templateService.createTemplate(templateDTO), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('HR', 'HIRE')")
+    @PreAuthorize("hasAnyRole('HR_MANAGER', 'NEW_HIRE')")
     public ResponseEntity<TemplateDTO> getTemplateById(@PathVariable Integer id) {
         return ResponseEntity.ok(templateService.getTemplateById(id));
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('HR', 'HIRE')")
+    @PreAuthorize("hasAnyRole('HR_MANAGER', 'NEW_HIRE')")
     public ResponseEntity<List<TemplateDTO>> getAllTemplates() {
         return ResponseEntity.ok(templateService.getAllTemplates());
     }
 
     @GetMapping("/department/{departmentId}")
-    @PreAuthorize("hasAnyRole('HR', 'HIRE')")
+    @PreAuthorize("hasAnyRole('HR_MANAGER', 'NEW_HIRE')")
     public ResponseEntity<List<TemplateDTO>> getTemplatesByDepartmentId(@PathVariable Integer departmentId) {
         return ResponseEntity.ok(templateService.getTemplatesByDepartmentId(departmentId));
     }
 
     @GetMapping("/hr/{hrManagerId}")
-    @PreAuthorize("hasAnyRole('HR', 'HIRE')")
+    @PreAuthorize("hasAnyRole('HR_MANAGER', 'NEW_HIRE')")
     public ResponseEntity<List<TemplateDTO>> getTemplatesByHrManagerId(@PathVariable Integer hrManagerId) {
         return ResponseEntity.ok(templateService.getTemplatesByHrManagerId(hrManagerId));
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('HR')")
+    @PreAuthorize("hasRole('HR_MANAGER')")
     public ResponseEntity<TemplateDTO> updateTemplate(@PathVariable Integer id, @RequestBody TemplateDTO templateDTO) {
         return ResponseEntity.ok(templateService.updateTemplate(id, templateDTO));
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('HR')")
+    @PreAuthorize("hasRole('HR_MANAGER')")
     public ResponseEntity<Void> deleteTemplate(@PathVariable Integer id) {
         templateService.deleteTemplate(id);
         return ResponseEntity.noContent().build();

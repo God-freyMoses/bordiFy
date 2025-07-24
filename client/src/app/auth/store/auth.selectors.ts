@@ -24,4 +24,4 @@ export const selectUserId = createSelector(selectUser, (user) => user?.id);
 
 export const selectUserRole = createSelector(selectUser, (user) => user?.role);
 
-export const selectUserName = createSelector(selectUser, (user) => user?.username)
+export const selectUserName = createSelector(selectUser, (user) => user?.email);
