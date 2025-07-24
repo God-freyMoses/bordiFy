@@ -2,7 +2,7 @@
 @SERVER = http://localhost:8080
 @HR_EMAIL = hr@example.com
 @HR_PASSWORD = password123
-@HIRE_EMAIL = hire@example.com
+@HIRE_EMAIL = godfrey@gmail.com
 @HIRE_PASSWORD = password123
 @TOKEN = Bearer eyJhbGciOiJIUzI1NiJ9...
 
@@ -16,8 +16,8 @@ Content-Type: application/json
 {
   "email": "{{HR_EMAIL}}",
   "password": "{{HR_PASSWORD}}",
-  "firstName": "John",
-  "lastName": "Doe",
+  "firstName": "Karabo",
+  "lastName": "Dono",
   "companyName": "Example Company"
 }
 
@@ -39,9 +39,9 @@ Authorization: {{TOKEN}}
 {
   "email": "{{HIRE_EMAIL}}",
   "password": "{{HIRE_PASSWORD}}",
-  "firstName": "Jane",
-  "lastName": "Smith",
-  "gender": "Female",
+  "firstName": "Godfrey",
+  "lastName": "Moses",
+  "gender": "Male",
   "title": "Software Engineer",
   "departmentId": "1"
 }

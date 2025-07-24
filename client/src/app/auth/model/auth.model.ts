@@ -1,7 +1,7 @@
-export type UserRoleType = 'ADMIN' | 'USER';
+export type UserRoleType = 'ADMIN' | 'USER' | 'HR' | 'HIRE';
 
 export type LoginRequestType = {
-  username: string;
+  email: string;
   password: string;
 };
 
@@ -11,8 +11,11 @@ export type RegisterRequestType = LoginRequestType & {
 
 export type UserType = {
   id: string;
-  username: string;
+  email: string;
+  firstName: string;
+  lastName: string;
   role: UserRoleType;
+  userType: string;
   createdAt: string;
 }
 

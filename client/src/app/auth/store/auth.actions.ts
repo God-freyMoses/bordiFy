@@ -1,9 +1,15 @@
 import {createAction, props} from '@ngrx/store';
 import {LoginRequestType, RegisterRequestType, UserTokenType, UserType} from '../model/auth.model';
 
+
+
+export let REGISTER = undefined;
+
+
 // REGISTER ACTIONS
 
-export const REGISTER = createAction('[Auth] Register', props<{credentials: RegisterRequestType}>());
+export const REGISTER_HR = createAction('[Auth] Register HR', props<{credentials: RegisterRequestType}>());
+export const REGISTER_HIRE = createAction('[Auth] Register Hire', props<{credentials: RegisterRequestType}>());
 export const REGISTER_SUCCESS = createAction('[Auth] Register success', props<{data: UserType}>());
 export const REGISTER_FAILURE = createAction('[Auth] Register fail', props<{error: any}>());
 

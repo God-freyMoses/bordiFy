@@ -2,13 +2,13 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Router, RouterLink} from '@angular/router';
 import {Store} from '@ngrx/store';
-import {REGISTER_HR} from '../store/auth.actions';
+import {REGISTER_HIRE} from '../store/auth.actions';
 import {selectError, selectIsLoggedIn, selectLoading} from '../store/auth.selectors';
 import {Observable, Subject, takeUntil} from 'rxjs';
 import {CommonModule} from '@angular/common';
 
 @Component({
-  selector: 'auth-register',
+  selector: 'auth-register-hire',
   standalone: true,
   imports: [RouterLink, ReactiveFormsModule, CommonModule],
   template: `
@@ -25,8 +25,8 @@ import {CommonModule} from '@angular/common';
 
 
           <!-- Welcome Text -->
-          <h2 class="text-2xl font-semibold text-gray-800 mb-1">Hi there!</h2>
-          <p class="text-sm text-gray-500 mb-6">Sign up to continue</p>
+          <h2 class="text-2xl font-semibold text-gray-800 mb-1">Register New Hire</h2>
+          <p class="text-sm text-gray-500 mb-6">Create an account for a new employee</p>
         </div>
 
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-5">
@@ -71,38 +71,39 @@ import {CommonModule} from '@angular/common';
             </div>
           </div>
 
-          <!-- Company Name -->
+          <!-- Department -->
           <div>
-            <label class="block text-gray-700 mb-1" for="companyName">Company Name</label>
-            <input id="companyName" type="text" formControlName="companyName" placeholder="Company Name"
+            <label class="block text-gray-700 mb-1" for="department">Department</label>
+            <input id="department" type="text" formControlName="department" placeholder="Department"
                    class="w-full px-4 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-500 focus:outline-none" />
           </div>
 
-          <!-- Remember me and Forgot -->
-           <div class="flex items-center justify-between text-sm">
-             <a routerLink="/login" class="text-teal-500 hover:underline">Already have an account?</a>
-           </div>
+          <!-- Error message -->
+          <div *ngIf="error$ | async as error" class="text-red-500 text-sm mb-2">
+            {{ error }}
+          </div>
 
-           <!-- Error message -->
-           <div *ngIf="error$ | async as error" class="text-red-500 text-sm mb-2">
-             {{ error }}
-           </div>
+          <!-- Register Button -->
+          <button type="submit" [disabled]="registerForm.invalid || (loading$ | async)"
+                  class="w-full bg-teal-500 hover:bg-teal-600 text-white py-2 rounded-md transition-colors cursor-pointer disabled:bg-gray-400 disabled:cursor-not-allowed">
+            <span *ngIf="loading$ | async">Loading...</span>
+            <span *ngIf="!(loading$ | async)">Register New Hire</span>
+          </button>
 
-           <!-- Sign Up Button -->
-           <button type="submit" [disabled]="registerForm.invalid || (loading$ | async)"
-                   class="w-full bg-teal-500 hover:bg-teal-600 text-white py-2 rounded-md transition-colors cursor-pointer disabled:bg-gray-400 disabled:cursor-not-allowed">
-             <span *ngIf="loading$ | async">Loading...</span>
-             <span *ngIf="!(loading$ | async)">Sign Up</span>
-           </button>
+          <!-- Back to Dashboard -->
+          <div class="flex items-center justify-center text-sm">
+            <a routerLink="/dashboard" class="text-teal-500 hover:underline">Back to Dashboard</a>
+          </div>
         </form>
       </div>
     </div>
   `,
 })
-export class RegisterComponent implements OnInit, OnDestroy {
+export class RegisterHireComponent implements OnInit, OnDestroy {
   registerForm!: FormGroup;
   showPassword = false;
   private destroy$ = new Subject<void>();
+
   loading$: Observable<boolean>;
   error$: Observable<string | null>;
   isLoggedIn$: Observable<boolean>;
@@ -121,12 +122,12 @@ export class RegisterComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initForm();
 
-    // Redirect if already logged in
+    // Redirect if not logged in
     this.isLoggedIn$
       .pipe(takeUntil(this.destroy$))
       .subscribe(isLoggedIn => {
-        if (isLoggedIn) {
-          this.router.navigate(['/dashboard']);
+        if (!isLoggedIn) {
+          this.router.navigate(['/login']);
         }
       });
   }
@@ -142,8 +143,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
       lastName: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      companyName: ['', [Validators.required]],
-      role: ['HR']
+      department: ['', [Validators.required]],
+      role: ['HIRE']
     });
   }
 
@@ -153,7 +154,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   onSubmit(): void {
     if (this.registerForm.valid) {
-      this.store.dispatch(REGISTER_HR({
+      this.store.dispatch(REGISTER_HIRE({
         credentials: this.registerForm.value
       }));
     }

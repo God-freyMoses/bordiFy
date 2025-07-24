@@ -3,56 +3,77 @@ package com.shaper.server.security;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class JwtUtil {
 
-    private final String SECRET_KEY = "bZNatHk6UxEnAtz9TfNKGAobhCZbCvaFEs58ZeG3GNhCOvVhlDE0ST7WtQculYJJ";
-    private final long EXPIRATION_TIME = 86400000; // 1 day
+    private final String secretKey;
+    private final long expirationTime;
+
+    public JwtUtil(@Value("${jwt.secret}") String secretKey, @Value("${jwt.expiration}") long expirationTime) {
+        this.secretKey = secretKey;
+        this.expirationTime = expirationTime;
+    }
 
     public String generateToken(String email, String role) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("role", role);
+
         return Jwts.builder()
-                .claims()
-                .add("role", role)
-                .and()
-                .subject(email)
-                .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .setClaims(claims)
+                .setSubject(email)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
                 .signWith(generateKey())
                 .compact();
     }
 
     public Claims extractClaims(String token) {
-        return Jwts.parser()
-                .verifyWith(generateKey())
-                .build()
-                .parseClaimsJws(token)
-                .getPayload();
+        try {
+            return Jwts.parserBuilder()
+                    .setSigningKey(generateKey())
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (ExpiredJwtException e) {
+            throw new IllegalArgumentException("Token has expired", e);
+        } catch (MalformedJwtException e) {
+            throw new IllegalArgumentException("Invalid token format", e);
+        } catch (JwtException e) {
+            throw new IllegalArgumentException("Token parsing error", e);
+        }
     }
 
+    public String extractUsername(String token) {
+        return extractClaims(token).getSubject();
+    }
+
+    public String extractRole(String token) {
+        return extractClaims(token).get("role", String.class);
+    }
+
+    public boolean isTokenExpired(String token) {
+        return extractClaims(token).getExpiration().before(new Date());
+    }
+    
     public boolean isTokenValid(String token) {
         try {
             extractClaims(token);
-            return true;
+            return !isTokenExpired(token);
         } catch (Exception e) {
             return false;
         }
     }
-    
-    public String extractUsername(String token) {
-        return extractClaims(token).getSubject();
-    }
-    
-    public String extractRole(String token) {
-        return extractClaims(token).get("role", String.class);
-    }
-    
+
     private SecretKey generateKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 }

@@ -7,7 +7,7 @@ export const routes: Routes = [
   ...AUTH_ROUTES,
   ...DASHBOARD_ROUTES,
   ...templatesRoutes,
-  {path: '', redirectTo: 'login', pathMatch: 'full'},
+  {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
   {path: '404', loadComponent: () => import('./share/components/notfound.component').then(m => m.NotFoundComponent)},
   {path: '**', redirectTo: '404', pathMatch: 'full'},
 ];
