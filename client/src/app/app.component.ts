@@ -1,12 +1,17 @@
+// src/app/app.component.ts
+
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { TemplatesModule } from './templates/templates.module';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, TemplatesModule],
+  standalone: true,
+  imports: [RouterOutlet],
   template: `
-    <router-outlet />
-  `
+    <router-outlet></router-outlet>
+  `,
+  styles: []
 })
-export class AppComponent {}
+export class AppComponent {
+  title = 'bOARDIFY';
+}
