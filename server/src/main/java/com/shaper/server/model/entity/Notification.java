@@ -9,8 +9,6 @@ import lombok.AllArgsConstructor;
 
 @Entity
 @Table(name = "notifications")
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Notification {
@@ -41,5 +39,53 @@ public class Notification {
     protected void onCreate() {
         createdAt = LocalDateTime.now();
         isRead = false;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public boolean isRead() {
+        return isRead;
+    }
+
+    public void setRead(boolean read) {
+        isRead = read;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Task getRelatedTask() {
+        return relatedTask;
+    }
+
+    public void setRelatedTask(Task relatedTask) {
+        this.relatedTask = relatedTask;
     }
 }

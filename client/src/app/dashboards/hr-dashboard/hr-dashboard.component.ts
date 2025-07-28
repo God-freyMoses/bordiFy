@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Router } from '@angular/router';
+import * as AuthActions from '../../auth/state/auth.actions';
 
 @Component({
   selector: 'app-hr-dashboard',
@@ -7,5 +10,11 @@ import { Component } from '@angular/core';
   styleUrl: './hr-dashboard.component.css'
 })
 export class HrDashboardComponent {
+  private store = inject(Store);
+  private router = inject(Router);
 
+  logout() {
+    this.store.dispatch(AuthActions.logout());
+    this.router.navigate(['/login']);
+  }
 }

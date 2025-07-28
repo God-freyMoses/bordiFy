@@ -29,7 +29,7 @@ public class ProgressController {
     }
 
     @GetMapping("/hire/{hireId}")
-    @PreAuthorize("hasAnyRole('HR_MANAGER', 'NEW_HIRE')")
+    @PreAuthorize("hasAnyRole('HR', 'HIRE')")
     @Operation(summary = "Get progress items for a hire", description = "Get all progress items for a specific hire")
     public ResponseEntity<List<Progress>> getProgressByHireId(@PathVariable UUID hireId) {
         // Check if the authenticated user is the hire or an HR manager
@@ -38,7 +38,7 @@ public class ProgressController {
         
         // If the user is a NEW_HIRE, they can only access their own progress
         if (authentication.getAuthorities().stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_NEW_HIRE"))) {
+                .anyMatch(a -> a.getAuthority().equals("ROLE_HIRE"))) {
             // Get the hire's username from the service
             String hireUsername = progressService.getHireUsername(hireId);
             if (!currentUsername.equals(hireUsername)) {
@@ -50,7 +50,7 @@ public class ProgressController {
     }
 
     @PutMapping("/{progressId}/start")
-    @PreAuthorize("hasRole('NEW_HIRE')")
+    @PreAuthorize("hasRole('HIRE')")
     @Operation(summary = "Start a task", description = "Mark a task as in progress")
     public ResponseEntity<Progress> startTask(@PathVariable Integer progressId) {
         // Check if the authenticated user is the hire assigned to this progress
@@ -69,7 +69,7 @@ public class ProgressController {
     }
 
     @PutMapping("/{progressId}/complete")
-    @PreAuthorize("hasRole('NEW_HIRE')")
+    @PreAuthorize("hasRole('HIRE')")
     @Operation(summary = "Complete a task", description = "Mark a task as completed")
     public ResponseEntity<Progress> completeTask(@PathVariable Integer progressId) {
         // Check if the authenticated user is the hire assigned to this progress
@@ -89,7 +89,7 @@ public class ProgressController {
     }
 
     @PutMapping("/{progressId}/sign")
-    @PreAuthorize("hasRole('NEW_HIRE')")
+    @PreAuthorize("hasRole('HIRE')")
     @Operation(summary = "Sign a task", description = "Add a signature to a completed task")
     public ResponseEntity<Progress> signTask(@PathVariable Integer progressId, @RequestBody Map<String, String> payload) {
         // Check if the authenticated user is the hire assigned to this progress

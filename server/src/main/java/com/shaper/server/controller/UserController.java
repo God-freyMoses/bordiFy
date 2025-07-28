@@ -36,18 +36,19 @@ public class UserController {
     )
     @PostMapping("/register/hr")
     public ResponseEntity<Result> registerHr(@RequestBody RegisterRequestDTO registerRequestDTO) {
+        System.out.println("========================================++>>>>>>>>>>>>>");
         UserDTO userDTO = userService.registerHr(registerRequestDTO);
         Result result = new Result(200, true, "HR Manager registered successfully!", userDTO);
         return ResponseEntity.ok(result);
     }
 
-    // REGISTER HIRE USER (HR ONLY)
+    // REGISTER HIRE USER (by HR )
     @Operation(
         summary = "Register New Hire",
         description = "Register a new hire. Only accessible by HR Managers."
     )
     @PostMapping("/register/hire")
-    @PreAuthorize("hasRole('HR_MANAGER')")
+
     public ResponseEntity<Result> registerHire(@RequestBody RegisterRequestDTO registerRequestDTO) {
         // Get the authenticated user from the security context
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

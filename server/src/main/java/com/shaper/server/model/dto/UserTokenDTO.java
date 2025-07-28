@@ -14,5 +14,4 @@ public class UserTokenDTO {
 
     private String token;
     private UserDTO user;
-
 }

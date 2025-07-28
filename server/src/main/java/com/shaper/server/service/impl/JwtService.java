@@ -21,9 +21,9 @@ public class JwtService {
     public String generateToken(User user) {
         String role;
         if (user instanceof HrUser) {
-            role = "HR_MANAGER";
+            role = "HR";
         } else if (user instanceof Hire) {
-            role = "NEW_HIRE";
+            role = "HIRE";
         } else {
             throw new IllegalArgumentException("Unknown user type");
         }

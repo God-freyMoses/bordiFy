@@ -36,8 +36,5 @@ public class Hire extends User {
     @OneToMany(mappedBy = "hire", cascade = CascadeType.ALL)
     private Set<Progress> progressItems;
     
-    @PrePersist
-    protected void onHireCreate() {
-        setRole(UserRole.NEW_HIRE);
-    }
+
 }

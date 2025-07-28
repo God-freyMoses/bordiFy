@@ -6,6 +6,7 @@
 @HIRE_PASSWORD = password123
 @TOKEN = Bearer eyJhbGciOiJIUzI1NiJ9...
 
+
 ##### TEST IF SERVER IS UP
 GET {{SERVER}}
 
@@ -14,15 +15,16 @@ POST {{SERVER}}/api/users/register/hr
 Content-Type: application/json
 
 {
-  "email": "{{HR_EMAIL}}",
-  "password": "{{HR_PASSWORD}}",
+  "email": "hr1@gmail.com",
+  "password": "123456",
   "firstName": "Karabo",
   "lastName": "Dono",
-  "companyName": "Example Company"
+  "companyName": "Example Company",
+  "role": "HR"
 }
 
 ##### LOGIN AS HR MANAGER
-# After successful login, copy the token from the response and update the TOKEN variable
+
 POST {{SERVER}}/api/users/login
 Content-Type: application/json
 

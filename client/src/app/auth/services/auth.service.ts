@@ -33,6 +33,7 @@ export class AuthService {
   }
 
   registerHr(registerRequest: RegisterRequest): Observable<unknown> {
+
     return this.http.post(
       `${this.apiUrl}/api/users/register/hr`,
       registerRequest
